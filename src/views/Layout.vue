@@ -119,6 +119,11 @@ export default {
                     text: this.TodoText,
                 });
                 this.TodoText = "";
+                await this.$store.dispatch("getLists", 
+                {
+                    user: this.$store.state.user._id
+                });
+                this.Todos = this.$store.state.Todos;
             }catch(error){
                 console.log(error);
             }
@@ -131,6 +136,11 @@ export default {
                     text: this.NoteText,
                 });
                 this.NoteText = "";
+                await this.$store.dispatch("getLists", 
+                {
+                    user: this.$store.state.user._id
+                });
+                this.Notes = this.$store.state.Notes;
             }catch(error){
                 console.log(error);
             }
@@ -143,6 +153,11 @@ export default {
                     text: this.GoalText,
                 });
                 this.GoalText = "";
+                await this.$store.dispatch("getLists", 
+                {
+                    user: this.$store.state.user._id
+                });                
+                this.Goals = this.$store.state.Goals;
             }catch(error){
                 console.log(error);
             }
@@ -155,6 +170,10 @@ export default {
                     text: this.GratitudeText,
                 });
                 this.GratitudeText = "";
+                await this.$store.dispatch("getLists", 
+                {
+                    user: this.$store.state.user._id
+                });
                 this.Gratitudes = this.$store.state.Gratitudes;
             }catch(error){
                 console.log(error);

@@ -3,6 +3,9 @@ const express = require("express");
 const router = express.Router();
 const auth = require("./auth.js");
 
+const users = require("./users.js");
+const User = users.model;
+
 const listItemSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.ObjectId,
@@ -12,18 +15,20 @@ const listItemSchema = new mongoose.Schema({
     text: String,
     created: {
         type: Date,
-        default: Date.now
+        default: Date.now,
       }
 });
 
 const listItem = mongoose.model("listItem", listItemSchema);
 
-router.get('/', async (req, res) => {
+router.get('/', /*auth.verifyToken, User.verify,*/ async (req, res) => {
     try {
+      console.log(req.query.user);
       let list = await listItem.find({
-        user: req.body.user
+        user: req.query.user,
       });
-      res.send(list);
+      console.log(list);
+      return res.send(list);
     } catch (error) {
       console.log(error);
       res.sendStatus(500);

@@ -68,54 +68,54 @@ userSchema.pre('save', async function(next) {
     this.tokens = auth.removeOldTokens(this.tokens);
   };
 
-  async function login(user, res) {
-    let token = auth.generateToken({
-      id: user._id
-    }, "24h");
   
-    user.removeOldTokens();
-    user.addToken(token);
-    await user.save();
-  
-    return res
-      .cookie("token", token, {
-        expires: new Date(Date.now() + 86400 * 1000)
-      })
-      .status(200).send(user);
-  }
-
-  const User = mongoose.model('User', userSchema);
-
-  // create a new user
-router.post('/register', async (req, res) => {
-  console.log("in register");
-    if (!req.body.username || !req.body.password)
-      return res.status(400).send({
-        message: "username and password are required"
-      });
-  
-    try {
-      //  check to see if username already exists
-      const existingUser = await User.findOne({
-        username: req.body.username
-      });
-      if (existingUser)
-        return res.status(403).send({
-          message: "username already exists"
-        });
-  
-      // create new user
-    const user = new User({
-        username: req.body.username,
-        password: req.body.password
-      });
-      await user.save();
-      login(user, res);
-    } catch (error) {
-      console.log(error);
-      return res.sendStatus(500);
-    }
+  // middleware to validate user account
+userSchema.statics.verify = async function(req, res, next) {
+  // look up user account
+  const user = await User.findOne({
+    _id: req.user_id
   });
+  if (!user || !user.tokens.includes(req.token))
+    return res.clearCookie('token').status(403).send({
+      error: "Invalid user account."
+    });
+
+  req.user = user;
+
+  next();
+}
+const User = mongoose.model('User', userSchema);
+  
+// create a new user
+  router.post('/register', async (req, res) => {
+    console.log("in register");
+      if (!req.body.username || !req.body.password)
+        return res.status(400).send({
+          message: "username and password are required"
+        });
+    
+      try {
+        //  check to see if username already exists
+        const existingUser = await User.findOne({
+          username: req.body.username
+        });
+        if (existingUser)
+          return res.status(403).send({
+            message: "username already exists"
+          });
+    
+        // create new user
+      const user = new User({
+          username: req.body.username,
+          password: req.body.password
+        });
+        await user.save();
+        login(user, res);
+      } catch (error) {
+        console.log(error);
+        return res.sendStatus(500);
+      }
+    });
 
 // login
 router.post('/login', async (req, res) => {
@@ -146,6 +146,22 @@ router.post('/login', async (req, res) => {
       return res.sendStatus(500);
     }
   });
+
+  async function login(user, res) {
+    let token = auth.generateToken({
+      id: user._id
+    }, "24h");
+  
+    user.removeOldTokens();
+    user.addToken(token);
+    await user.save();
+  
+    return res
+      .cookie("token", token, {
+        expires: new Date(Date.now() + 86400 * 1000)
+      })
+      .status(200).send(user);
+  }
 
   // Logout
 router.delete("/", auth.verifyToken, async (req, res) => {
@@ -180,18 +196,28 @@ router.delete("/", auth.verifyToken, async (req, res) => {
       .status(200).send(user);
   }
 
-  // Get current user if logged in.
-router.get('/', auth.verifyToken, async (req, res) => {
-  // look up user account
-  const user = await User.findOne({
-    _id: req.user_id
-  });
-  if (!user)
-    return res.status(403).send({
-      error: "must login"
-    });
+//   // Get current user if logged in.
+// router.get('/', auth.verifyToken, async (req, res) => {
+//   // look up user account
+//   const user = await User.findOne({
+//     _id: req.user_id
+//   });
+//   if (!user)
+//     return res.status(403).send({
+//       error: "must login"
+//     });
 
-  return res.send(user);
+//   return res.send(user);
+// });
+
+// Get current user if logged in.
+router.get('/', /*auth.verifyToken, User.verify,*/ async (req, res) => {
+  return res.send(req.user);
 });
 
-  module.exports = router;
+// module.exports = {
+//   model: User,
+//   routes: router,
+// }
+
+module.exports = router;

@@ -75,31 +75,41 @@ export default new Vuex.Store({
     async getUser(context) {
 
     },
-    async getLists(context){
+    async getLists(context, data){
       try {
-        let response = await axios.get("/api/items", this.user);
-        console.log("getLists" + response);
+        console.log(data);
+        let response = await axios.get("/api/items",{
+          params: {
+            user: data.user
+          }
+        });
+        console.log("getLists: " + response.data[0]);
         let todos = response.data.filter(function(d){
           if(d.type === "Todo"){
             return d.text;
           }
         });
         context.commit('setTodos', todos);
-        this.Notes = response.data.filter(function(d){
+        let notes = response.data.filter(function(d){
           if(d.type === "Note"){
             return d.text;
           }
         });
-        this.Goals = response.data.filter(function(d){
+        context.commit('setNotes', notes);
+        let goals = response.data.filter(function(d){
           if(d.type === "Goal"){
             return d.text;
           }
         });
-        this.Gratitudes = response.data.filter(function(d){
+        context.commit('setGoals', goals);
+        console.log(goals)
+        let gratitudes = response.data.filter(function(d){
           if(d.type === "Gratitude"){
             return d.text;
           }
         });
+        context.commit('setGratitudes', gratitudes);
+        console.log(gratitudes);
       } catch(error){
         console.log(error);
       }
@@ -108,7 +118,7 @@ export default new Vuex.Store({
       try {
         let response = await axios.post("/api/items", data);
         console.log(response);
-        await this.$store.dispatch("getLists");
+        //await this.$store.dispatch("getLists");
       } catch (error) {
         console.log(error);
       }
