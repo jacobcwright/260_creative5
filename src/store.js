@@ -56,8 +56,8 @@ export default new Vuex.Store({
         console.log(this.user);
         return "";
       } catch (error) {
-        context.commit('setError', error.response.data.message);
-        this.error = error.response.data.message;
+        context.commit('setError', error.response.data.error);
+        this.error = error.response.data.error;
         return this.error;
       }
     },

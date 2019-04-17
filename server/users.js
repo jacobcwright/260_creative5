@@ -39,9 +39,12 @@ userSchema.pre('save', async function(next) {
 
   userSchema.methods.comparePassword = async function(password) {
     try {
+      console.log("in comparePasswords");
       const isMatch = await bcrypt.compare(password, this.password);
-      return true;
+      console.log(isMatch);
+      return isMatch;
     } catch (error) {
+      console.log(error)
       return false;
     }
   };
@@ -132,7 +135,7 @@ router.post('/login', async (req, res) => {
         });
   
       // check password
-      if (!existingUser.comparePassword(req.body.password))
+      if (!await existingUser.comparePassword(req.body.password))
         return res.status(403).send({
           error: "username or password is wrong"
         });
