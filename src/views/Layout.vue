@@ -102,6 +102,24 @@ export default {
             error: null,
         }
     },
+    async created(){
+        console.log("created");
+        this.user = this.$store.state.user;
+        await this.$store.dispatch("getLists", 
+        {
+            user: this.$store.state.user._id
+        });
+        this.Todos = this.$store.state.Todos;
+        this.Notes = this.$store.state.Notes;
+        this.Goals = this.$store.state.Goals;
+        this.Gratitudes = this.$store.state.Gratitudes;
+    },
+    computed: {
+        getUser(){
+            this.user = this.$store.state.user
+        },
+
+    },
     methods: {
         async logout(){
             try {
@@ -179,7 +197,42 @@ export default {
                 console.log(error);
             }
         },
-
+        async ClearTodo() {
+            console.log("in clear todo");
+            this.Todos = [];
+            try {
+                let response = await this.$store.dispatch("clear", "todo");
+            } catch(error) {
+                console.log(error);
+            }
+        },
+        async ClearNote() {
+            console.log("in clear note");
+            this.Notes = [];
+            try {
+                let response = await this.$store.dispatch("clear", "note");
+            } catch(error) {
+                console.log(error);
+            }    
+        },
+        async ClearGoal() {
+            console.log("in clear goal");
+            this.Goals = [];
+            try {
+                let response = await this.$store.dispatch("clear", "goal");
+            } catch(error) {
+                console.log(error);
+            }    
+        },
+        async ClearGratitude() {
+            console.log("in clear gratitude");
+            this.Gratitudes = [];
+            try {
+                let response = await this.$store.dispatch("clear", "gratitude");
+            } catch(error) {
+                console.log(error);
+            }    
+        },
     }
 }
 </script>

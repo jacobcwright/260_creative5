@@ -73,7 +73,13 @@ export default new Vuex.Store({
       }
     },
     async getUser(context) {
-
+      try {
+        let response = await axios.get("/api/users");
+        context.commit('setUser', response.data);
+        return "";
+      } catch (error) {
+        return "";
+      }
     },
     async getLists(context, data){
       try {
@@ -120,6 +126,18 @@ export default new Vuex.Store({
         console.log(response);
         //await this.$store.dispatch("getLists");
       } catch (error) {
+        console.log(error);
+      }
+    },
+    async clear(context, data){
+      try{
+        let response = await axios.delete("/api/items/" + data);
+        context.commit('setGratitudes', gratitudes);
+        context.commit('setGoals', goals);
+        context.commit('setNotes', notes);
+        context.commit('setTodos', todos);
+        console.log(response);
+      } catch (error){
         console.log(error);
       }
     }
