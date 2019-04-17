@@ -29,11 +29,13 @@ export default new Vuex.Store({
     setGratitudes(state, gratitudes){
       state.Gratitudes = gratitudes;
     },
-
+    setError(state, error){
+      state.error = error;
+    }
 
   },
   actions: {
-    async login(context, data){
+    async register(context, data){
       this.error = "";
       try {
         let response = await axios.post("/api/users/register", data);
@@ -42,10 +44,20 @@ export default new Vuex.Store({
         return "";
       } catch (error) {
         this.error = error.response.data.message;
+        return this.error;
       }
     },
-    async register(context, data){
-
+    async login(context, data){
+      this.error = "";
+      try {
+        let response = await axios.post("/api/users/login", data);
+        context.commit('setUser', response.data);
+        console.log(this.user);
+        return "";
+      } catch (error) {
+        console.log(error);
+        this.error = error.response.data.message;
+      }
     },
     async logout(context){
 

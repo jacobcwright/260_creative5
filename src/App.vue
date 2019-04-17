@@ -1,12 +1,11 @@
 <template>
 <div id="index">
-<Login>
+<router-view/>
     <footer id="footer">
         <a href="https://github.com/jacobcwright/">Github
           <!-- <img id="footerpic" src="./src/assets/github.png"> -->
         </a>
     </footer>
-</Login>
 </div>
 </template>
 
@@ -35,7 +34,7 @@ height: 100%;
 #footer {
     position:fixed;
     left:0px;
-    bottom:0px;
+    bottom:-33px;
     height:50px;
     width:100%;
     /* background:rgb(255, 255, 255, .7);;
@@ -47,10 +46,6 @@ height: 100%;
     height: 30px;
  }
 
- #footer2 {
-     text-align: center;
-     text-decoration: italic;
- }
 
 </style>
 
@@ -64,8 +59,8 @@ export default {
     }
   },
   components: {
-    Login,
-  }
+
+}
 }
 </script>
 

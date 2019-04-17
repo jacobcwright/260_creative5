@@ -85,7 +85,7 @@ userSchema.pre('save', async function(next) {
 
   // create a new user
 router.post('/register', async (req, res) => {
-  console.log("made it");
+  console.log("in register");
     if (!req.body.username || !req.body.password)
       return res.status(400).send({
         message: "username and password are required"

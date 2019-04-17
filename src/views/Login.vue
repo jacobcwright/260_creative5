@@ -72,6 +72,11 @@
     padding: 10px 10px 10px;
     width: 93%;
 }
+
+.error {
+    text-align: center;
+    color: red;
+}
 </style>
 
 <script>
@@ -89,6 +94,18 @@
         async login(){
             try {
                 this.error = await this.$store.dispatch("login", {
+                    username: this.username,
+                    password: this.password
+                });
+                if (this.error === "")
+                    this.$router.push('layout'); /* CHANGE PAGE */
+            } catch(error){
+                console.log(error);
+            }
+        },
+        async register(){
+            try{
+                this.error = await this.$store.dispatch("register", {
                     username: this.username,
                     password: this.password
                 });
