@@ -20,7 +20,9 @@ const listItem = mongoose.model("listItem", listItemSchema);
 
 router.get('/', async (req, res) => {
     try {
-      let list = await listItem.find();
+      let list = await listItem.find({
+        user: req.body.user
+      });
       res.send(list);
     } catch (error) {
       console.log(error);
@@ -30,6 +32,7 @@ router.get('/', async (req, res) => {
   
   router.post('/', async (req, res) => {
     const item = new listItem({
+      user: req.body.user,
       type: req.body.type,
       text: req.body.text
     });

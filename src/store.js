@@ -77,8 +77,8 @@ export default new Vuex.Store({
     },
     async getLists(context){
       try {
-        let response = await axios.get("/api/items");
-        console.log(response);
+        let response = await axios.get("/api/items", this.user);
+        console.log("getLists" + response);
         let todos = response.data.filter(function(d){
           if(d.type === "Todo"){
             return d.text;
@@ -108,7 +108,7 @@ export default new Vuex.Store({
       try {
         let response = await axios.post("/api/items", data);
         console.log(response);
-        this.getLists();
+        await this.$store.dispatch("getLists");
       } catch (error) {
         console.log(error);
       }

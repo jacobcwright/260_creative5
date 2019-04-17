@@ -114,7 +114,7 @@ export default {
         async AddTodo(){
             try {
                 this.Todos = await this.$store.dispatch("addItem", {
-                    user: this.$store.state.user,
+                    user: this.$store.state.user._id,
                     type: 'Todo',
                     text: this.TodoText,
                 });
@@ -124,14 +124,42 @@ export default {
             }
         },
         async AddNote(){
-
+            try {
+                this.Notes = await this.$store.dispatch("addItem", {
+                    user: this.$store.state.user._id,
+                    type: 'Note',
+                    text: this.NoteText,
+                });
+                this.NoteText = "";
+            }catch(error){
+                console.log(error);
+            }
         },
         async AddGoal(){
-
+            try {
+                this.Goals = await this.$store.dispatch("addItem", {
+                    user: this.$store.state.user._id,
+                    type: 'Goal',
+                    text: this.GoalText,
+                });
+                this.GoalText = "";
+            }catch(error){
+                console.log(error);
+            }
         },
         async AddGratitude(){
-
-        }
+            try {
+                await this.$store.dispatch("addItem", {
+                    user: this.$store.state.user._id,
+                    type: 'Gratitude',
+                    text: this.GratitudeText,
+                });
+                this.GratitudeText = "";
+                this.Gratitudes = this.$store.state.Gratitudes;
+            }catch(error){
+                console.log(error);
+            }
+        },
 
     }
 }
