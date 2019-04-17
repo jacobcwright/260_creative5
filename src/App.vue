@@ -2,7 +2,7 @@
 <div id="index">
 <router-view/>
     <footer id="footer">
-        <a href="https://github.com/jacobcwright/">Github
+        <a href="https://github.com/jacobcwright/260_creative5">Github
           <!-- <img id="footerpic" src="./src/assets/github.png"> -->
         </a>
     </footer>
