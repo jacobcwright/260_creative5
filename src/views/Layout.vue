@@ -6,6 +6,7 @@
                 <h1>Todo</h1>
                 <form @submit.prevent="AddTodo">
                     <input type="text" v-model="TodoText" placeholder="Todo Item">
+                    <button type="submit">add</button>
                 </form>
                 <ul>
                     <li v-for="todo in Todos"> {{ todo.text }} </li>
@@ -16,6 +17,7 @@
                 <h1>Notes</h1>
                 <form @submit.prevent="AddNote">
                     <input type="text" v-model="NoteText" placeholder="Notes">
+                    <button type="submit">add</button>
                 </form>
                 <ul>
                     <li v-for="note in Notes"> {{ note.text }} </li>
@@ -26,6 +28,7 @@
                 <h1>Goals</h1>
                 <form @submit.prevent="AddGoal">
                     <input type="text" v-model="GoalText" placeholder="Goal">
+                    <button type="submit">add</button>
                 </form>
                 <ul>
                     <li v-for="goal in Goals"> {{ goal.text }} </li>
@@ -36,6 +39,7 @@
                 <h1>Gratitude</h1>
                 <form @submit.prevent="AddGratitude">
                     <input type="text" v-model="GratitudeText" placeholder="I'm thankful for...">
+                    <button type="submit">add</button>
                 </form>
                 <ul>
                     <li v-for="gratitude in Gratitudes"> {{ gratitude.text }} </li>
@@ -106,7 +110,29 @@ export default {
             } catch(error){
                 console.log(error);
             }
+        },
+        async AddTodo(){
+            try {
+                this.Todos = await this.$store.dispatch("addItem", {
+                    user: this.$store.state.user,
+                    type: 'Todo',
+                    text: this.TodoText,
+                });
+                this.TodoText = "";
+            }catch(error){
+                console.log(error);
+            }
+        },
+        async AddNote(){
+
+        },
+        async AddGoal(){
+
+        },
+        async AddGratitude(){
+
         }
+
     }
 }
 </script>

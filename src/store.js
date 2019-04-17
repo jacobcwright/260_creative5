@@ -66,16 +66,52 @@ export default new Vuex.Store({
       try {
         let response = await axios.delete("/api/users/");
         context.commit('setUser', null);
+        console.log(response);
         return null;
       } catch (error) {
-        // don't worry about it
+        console.log(error)
       }
     },
     async getUser(context) {
 
     },
-    async getLists(){
-      //fetch list of all items, pass to todos, notes, etc.
+    async getLists(context){
+      try {
+        let response = await axios.get("/api/items");
+        console.log(response);
+        let todos = response.data.filter(function(d){
+          if(d.type === "Todo"){
+            return d.text;
+          }
+        });
+        context.commit('setTodos', todos);
+        this.Notes = response.data.filter(function(d){
+          if(d.type === "Note"){
+            return d.text;
+          }
+        });
+        this.Goals = response.data.filter(function(d){
+          if(d.type === "Goal"){
+            return d.text;
+          }
+        });
+        this.Gratitudes = response.data.filter(function(d){
+          if(d.type === "Gratitude"){
+            return d.text;
+          }
+        });
+      } catch(error){
+        console.log(error);
+      }
     },
+    async addItem(context, data){
+      try {
+        let response = await axios.post("/api/items", data);
+        console.log(response);
+        this.getLists();
+      } catch (error) {
+        console.log(error);
+      }
+    }
   }
 })
