@@ -1,6 +1,6 @@
 <template>
 <div>
-        <nav @click.prevent="logout" id="logout">logout</nav>
+        <nav @click.prevent="logout" id="logout"><a>logout</a></nav>
     <div class="layout">
             <div class="section">
                 <h1>Todo</h1>
@@ -71,7 +71,13 @@
      text-align: right;
      text-decoration: underline;
      margin-right: 15px;
+     size: 12px;
  }
+
+#logout :hover {
+    color: blue;
+    font-size: 105%;
+}
 
 </style>
 
@@ -90,6 +96,16 @@ export default {
             Gratitudes: [],
             GratitudeText: null,
             error: null,
+        }
+    },
+    methods: {
+        async logout(){
+            try {
+                this.user = await this.$store.dispatch("logout"); 
+                this.$router.push('/'); /* CHANGE PAGE */
+            } catch(error){
+                console.log(error);
+            }
         }
     }
 }

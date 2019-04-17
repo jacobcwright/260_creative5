@@ -43,6 +43,7 @@ export default new Vuex.Store({
         console.log(this.user);
         return "";
       } catch (error) {
+        context.commit('setError', error.response.data.message);
         this.error = error.response.data.message;
         return this.error;
       }
@@ -55,12 +56,20 @@ export default new Vuex.Store({
         console.log(this.user);
         return "";
       } catch (error) {
-        console.log(error);
+        context.commit('setError', error.response.data.message);
         this.error = error.response.data.message;
+        return this.error;
       }
     },
     async logout(context){
-
+      console.log('in logout');
+      try {
+        let response = await axios.delete("/api/users/");
+        context.commit('setUser', null);
+        return null;
+      } catch (error) {
+        // don't worry about it
+      }
     },
     async getUser(context) {
 
