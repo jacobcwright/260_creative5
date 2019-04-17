@@ -1,31 +1,71 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
-  </div>
+<div id="index">
+<Login>
+    <footer id="footer">
+        <a href="https://github.com/jacobcwright/">Github
+          <!-- <img id="footerpic" src="./src/assets/github.png"> -->
+        </a>
+    </footer>
+</Login>
+</div>
 </template>
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-#nav {
-  padding: 30px;
+<style scoped>
+html, body {
+/*margin: 0;*/
+height: 100%;
 }
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
+
+#index {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    overflow: auto;
+    /*background: url(~.\src\assets\Sunrise,_Kauai.jpg) no-repeat center center fixed;*/ 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    background-color: rgb(248, 239, 204);
 }
 
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
+#footer {
+    position:fixed;
+    left:0px;
+    bottom:0px;
+    height:50px;
+    width:100%;
+    /* background:rgb(255, 255, 255, .7);;
+    color: black; */
+    text-align: center; 
+} 
+
+#footerpic {
+    height: 30px;
+ }
+
+ #footer2 {
+     text-align: center;
+     text-decoration: italic;
+ }
+
 </style>
+
+<script>
+import Login from './views/Login.vue'
+
+export default {
+  data(){
+    return {
+
+    }
+  },
+  components: {
+    Login,
+  }
+}
+</script>
+
